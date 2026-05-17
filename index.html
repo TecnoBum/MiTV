@@ -43,7 +43,6 @@
             line-height: 1.5;
         }
 
-        /* Contenedor principal (dashboard) */
         .app-container {
             width: 100%;
             max-width: 800px;
@@ -202,7 +201,7 @@
             border: 1px solid var(--gray-200);
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 16px;
         }
 
         .welcome-greeting {
@@ -226,27 +225,45 @@
             font-weight: 700;
         }
 
-        .datetime {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
+        .date-display {
             color: var(--gray-500);
             font-size: 0.95rem;
-            align-items: flex-end;
-        }
-
-        .datetime .date {
             font-weight: 500;
-            color: var(--gray-700);
+            white-space: nowrap;
         }
 
-        .datetime .time {
-            font-weight: 600;
-            font-size: 1.2rem;
+        .actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn-outline {
+            padding: 10px 20px;
+            background: #ffffff;
+            border: 1px solid var(--primary);
             color: var(--primary);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all var(--transition);
+            text-decoration: none;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
 
-        .logout-btn {
+        .btn-outline:hover {
+            background: var(--primary-light);
+            border-color: var(--primary-hover);
+            color: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(37, 99, 235, 0.15);
+        }
+
+        .btn-secondary {
             padding: 10px 20px;
             background: #ffffff;
             border: 1px solid var(--gray-300);
@@ -255,17 +272,14 @@
             cursor: pointer;
             font-weight: 500;
             transition: all var(--transition);
-            align-self: flex-start;
-            white-space: nowrap;
         }
 
-        .logout-btn:hover {
+        .btn-secondary:hover {
             background: var(--gray-100);
             border-color: var(--gray-400);
             color: var(--gray-800);
         }
 
-        /* Burbuja de texto mejorada */
         .speech-bubble {
             background: #ffffff;
             border-radius: var(--radius);
@@ -275,7 +289,6 @@
             position: relative;
             border: 1px solid var(--gray-200);
             border-left: 5px solid var(--primary);
-            transition: all var(--transition);
         }
 
         .speech-bubble::before {
@@ -300,7 +313,6 @@
             z-index: 1;
         }
 
-        /* Animaciones */
         @keyframes fadeSlideIn {
             from {
                 opacity: 0;
@@ -312,7 +324,6 @@
             }
         }
 
-        /* Responsive */
         @media (max-width: 640px) {
             .login-container {
                 padding: 28px 24px;
@@ -323,12 +334,12 @@
             .welcome-text h2 {
                 font-size: 1.3rem;
             }
-            .datetime {
-                align-items: flex-start;
-                margin-top: 8px;
-            }
             .speech-bubble {
                 padding: 20px 24px;
+            }
+            .actions {
+                flex-direction: column;
+                align-items: stretch;
             }
         }
     </style>
@@ -378,12 +389,12 @@
                     <div class="welcome-text">
                         <h2 id="welcomeTitle"></h2>
                     </div>
-                    <div class="datetime">
-                        <span class="date" id="dateDisplay"></span>
-                        <span class="time" id="timeDisplay"></span>
-                    </div>
+                    <div class="date-display" id="dateDisplay"></div>
                 </div>
-                <button class="logout-btn" onclick="logout()">Cerrar Sesión</button>
+                <div class="actions">
+                    <a href="https://www.tvcubana.icrt.cu/" target="_blank" rel="noopener noreferrer" class="btn-outline">Ver Cartelera</a>
+                    <button class="btn-secondary" onclick="logout()">Cerrar Sesión</button>
+                </div>
             </div>
 
             <div class="speech-bubble">
@@ -435,7 +446,6 @@
                 registerForm.style.display = 'block';
             }
             errorEl.textContent = '';
-            // Limpiar campos
             document.getElementById('loginUser').value = '';
             document.getElementById('loginPass').value = '';
             document.getElementById('regUser').value = '';
@@ -494,23 +504,18 @@
 
         function showDashboard(username) {
             document.getElementById('loginContainer').style.display = 'none';
-            const appContainer = document.getElementById('appContainer');
-            appContainer.classList.add('active');
-            // Configurar bienvenida
+            document.getElementById('appContainer').classList.add('active');
             document.getElementById('welcomeTitle').innerHTML =
                 `<strong>${username}</strong>, le damos la bienvenida a su televisor, escoja qué canal quiere ver en el menú de la aplicación.`;
-            updateDateTime();
-            setInterval(updateDateTime, 1000);
+            updateDate();
             loadBubbleText();
         }
 
-        function updateDateTime() {
+        function updateDate() {
             const now = new Date();
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             const dateStr = now.toLocaleDateString('es-ES', options);
-            const timeStr = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
             document.getElementById('dateDisplay').textContent = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
-            document.getElementById('timeDisplay').textContent = timeStr;
         }
 
         async function loadBubbleText() {
