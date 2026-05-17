@@ -24,15 +24,13 @@
         /* Contenedor principal */
         .app-container {
             width: 100%;
-            max-width: 1100px;
-            min-height: 90vh;
+            max-width: 900px;
             margin: 20px;
             display: none;
         }
 
         .app-container.active {
-            display: flex;
-            gap: 20px;
+            display: block;
         }
 
         /* Login */
@@ -135,50 +133,7 @@
         }
 
         /* Dashboard */
-        .sidebar {
-            width: 230px;
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            border: 1px solid #e2e8f0;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .sidebar h3 {
-            color: #1a56db;
-            margin-bottom: 10px;
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-
-        .channel-btn {
-            padding: 10px 14px;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            color: #334155;
-            cursor: pointer;
-            text-align: left;
-            transition: 0.2s;
-            font-size: 0.95rem;
-        }
-
-        .channel-btn:hover {
-            background: #e0e7ff;
-            border-color: #1a56db;
-        }
-
-        .channel-btn.active {
-            background: #1a56db;
-            color: white;
-            border-color: #1a56db;
-        }
-
         .main-content {
-            flex: 1;
             display: flex;
             flex-direction: column;
             gap: 20px;
@@ -191,14 +146,15 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
             border: 1px solid #e2e8f0;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            gap: 8px;
         }
 
         .welcome-text h2 {
             color: #0f172a;
-            margin-bottom: 4px;
             font-size: 1.3rem;
+            font-weight: 600;
+            line-height: 1.4;
         }
 
         .welcome-text p {
@@ -215,6 +171,7 @@
             cursor: pointer;
             transition: 0.2s;
             font-weight: 500;
+            align-self: flex-start;
         }
 
         .logout-btn:hover {
@@ -222,41 +179,13 @@
             border-color: #94a3b8;
         }
 
-        .tv-screen {
-            flex: 1;
-            background: #f8fafc;
-            border-radius: 16px;
-            border: 1px solid #e2e8f0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 280px;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
-        }
-
-        .tv-screen .channel-display {
-            text-align: center;
-        }
-
-        .tv-screen .channel-display h3 {
-            font-size: 1.8rem;
-            color: #1a56db;
-            font-weight: 600;
-        }
-
-        .tv-screen .channel-display p {
-            color: #64748b;
-            margin-top: 8px;
-            font-size: 0.95rem;
-        }
-
         .speech-bubble {
             background: #ffffff;
             border-radius: 16px;
-            padding: 20px;
+            padding: 25px;
             border: 1px solid #e2e8f0;
-            position: relative;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            position: relative;
         }
 
         .speech-bubble::before {
@@ -274,32 +203,17 @@
 
         .speech-bubble p {
             color: #334155;
-            font-size: 0.95rem;
-            line-height: 1.5;
+            font-size: 1rem;
+            line-height: 1.6;
         }
 
-        @media (max-width: 768px) {
-            .app-container.active {
-                flex-direction: column;
-            }
-
-            .sidebar {
-                width: 100%;
-                flex-direction: row;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 6px;
+        @media (max-width: 600px) {
+            .welcome-bar {
                 padding: 15px;
             }
 
-            .sidebar h3 {
-                width: 100%;
-                text-align: center;
-            }
-
-            .welcome-bar {
-                flex-direction: column;
-                gap: 10px;
+            .welcome-text h2 {
+                font-size: 1.1rem;
             }
         }
     </style>
@@ -314,7 +228,6 @@
             <button class="login-tab" onclick="switchTab('register')">Crear Usuario</button>
         </div>
 
-        <!-- Formulario de Inicio de Sesión -->
         <form id="loginForm" onsubmit="handleLogin(event)">
             <div class="form-group">
                 <label>Usuario</label>
@@ -327,7 +240,6 @@
             <button type="submit" class="btn">Ingresar</button>
         </form>
 
-        <!-- Formulario de Registro -->
         <form id="registerForm" style="display:none;" onsubmit="handleRegister(event)">
             <div class="form-group">
                 <label>Usuario</label>
@@ -345,36 +257,16 @@
 
     <!-- Dashboard principal -->
     <div id="appContainer" class="app-container">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <h3>Canales</h3>
-            <button class="channel-btn active" onclick="changeChannel('Canal de las Estrellas')">Canal de las Estrellas</button>
-            <button class="channel-btn" onclick="changeChannel('Canal 5')">Canal 5</button>
-            <button class="channel-btn" onclick="changeChannel('Azteca 7')">Azteca 7</button>
-            <button class="channel-btn" onclick="changeChannel('Canal 11')">Canal 11</button>
-            <button class="channel-btn" onclick="changeChannel('ESPN')">ESPN</button>
-            <button class="channel-btn" onclick="changeChannel('Discovery')">Discovery</button>
-        </div>
-
-        <!-- Contenido principal -->
         <div class="main-content">
             <div class="welcome-bar">
                 <div class="welcome-text">
-                    <h2 id="welcomeTitle">Bienvenido</h2>
+                    <h2 id="welcomeTitle"></h2>
                     <p id="dateTime"></p>
                 </div>
                 <button class="logout-btn" onclick="logout()">Cerrar Sesion</button>
             </div>
 
-            <!-- Pantalla TV -->
-            <div class="tv-screen">
-                <div class="channel-display">
-                    <h3 id="currentChannel">Canal de las Estrellas</h3>
-                    <p>Estas viendo este canal</p>
-                </div>
-            </div>
-
-            <!-- Burbuja de texto -->
+            <!-- Burbuja de texto con el mensaje descargado -->
             <div class="speech-bubble">
                 <p id="bubbleText">Cargando...</p>
             </div>
@@ -469,11 +361,11 @@
         function showDashboard(username) {
             document.getElementById('loginContainer').style.display = 'none';
             document.getElementById('appContainer').classList.add('active');
-            document.getElementById('welcomeTitle').textContent = `Bienvenido ${username} a Tu TV`;
+            document.getElementById('welcomeTitle').textContent =
+                `${username} Le damos la bienvenida a su televisor, escoja que canal quiere ver en el menú de la aplicación.`;
             updateDateTime();
             setInterval(updateDateTime, 1000);
             loadBubbleText();
-            changeChannel('Canal de las Estrellas');
         }
 
         function updateDateTime() {
@@ -482,18 +374,6 @@
             const dateStr = now.toLocaleDateString('es-ES', options);
             const timeStr = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
             document.getElementById('dateTime').textContent = `Hoy es ${dateStr} y son las ${timeStr}`;
-        }
-
-        function changeChannel(channelName) {
-            document.getElementById('currentChannel').textContent = channelName;
-            document.querySelectorAll('.channel-btn').forEach(btn => btn.classList.remove('active'));
-            // Encuentra el botón que corresponde al canal y lo activa
-            const buttons = document.querySelectorAll('.channel-btn');
-            buttons.forEach(btn => {
-                if (btn.textContent.trim() === channelName) {
-                    btn.classList.add('active');
-                }
-            });
         }
 
         async function loadBubbleText() {
